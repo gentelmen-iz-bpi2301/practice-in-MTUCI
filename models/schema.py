@@ -1,8 +1,13 @@
 from pydantic import BaseModel
 
-class Vacancy(BaseModel):
-    post: str
-    salary: str
-    requirements: str
-    company: str
-    schedule: str
+
+class VacancyTable(BaseModel):
+    post: str = ''
+    salary: str = ''
+    
+    company: str = ''
+    schedule: str = ''
+    vacancy_url: str = ''
+
+
+    

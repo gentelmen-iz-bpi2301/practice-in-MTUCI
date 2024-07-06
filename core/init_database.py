@@ -1,4 +1,4 @@
-from database import engine
+from .database import engine
 from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
@@ -12,4 +12,3 @@ def init_db():
     except Exception as e:
         print(f"Error initializing database: {e}")
 
-init_db()

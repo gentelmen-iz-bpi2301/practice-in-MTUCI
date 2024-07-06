@@ -1,5 +1,6 @@
 import requests
-from ..core import session
+from core import session
+from models import VacancyTable, Vacancy
 
 
 def your_vacancies():
@@ -14,7 +15,7 @@ def your_vacancies():
         vacancy_url = vacancy.get('alternate_url')
         company = vacancy.get('employer', {}).get('name')
         salary = vacancy.get('salary')
-        requirements = vacancy.get('snippet', {}).get('requirement')
+        
         schedule = vacancy.get('schedule',{}).get('name')
 
         if salary:
@@ -33,6 +34,15 @@ def your_vacancies():
         else:
             your_salary = 'Не указана'
         
-        print (f'Должность:{post} \n Зарплата: {your_salary} \n Работодатель: {company} \n Ссылка на вакансию: {vacancy_url} \n Требования: {requirements} \n График: {schedule} \n')
+        for vacancy in vacancies:
+            parsed_vacancy = VacancyTable(
+                post = post,
+                salary = your_salary,
+                company = company,
+                schedule = schedule,
+                vacancy_url = vacancy_url
+            )
+            session.add(parsed_vacancy)
+            session.commit()
+            return parsed_vacancy
 
-your_vacancies()

@@ -1,12 +1,11 @@
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy import create_engine
-import database.Base
 
-#from ..config import DB_HOST, DB_NAME, DB_PASS, DB_PORT,DB_USER
-#from ..models.base import Base
 
-class Base(DeclarativeBase):
-    pass
+from config import DB_HOST, DB_NAME, DB_PASS, DB_PORT,DB_USER
+from models import Base
+
+
 
 DB_URL = f"postgresql://postgres:postgres@localhost:5432/postgres"
 
