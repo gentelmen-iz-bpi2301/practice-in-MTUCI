@@ -53,6 +53,12 @@ def vacancy_filter(post = None, salary = None, schedule = None):
         filtered_table = session.query(Vacancy).filter(and_(Vacancy.schedule == schedule, Vacancy.post == post)).all()
     elif post and schedule and salary:
         filtered_table = session.query(Vacancy).filter(and_(Vacancy.schedule == schedule, Vacancy.post == post, Vacancy.salary == salary)).all()
+    elif post:
+        filtered_table = session.query(Vacancy).filter((Vacancy.post == post)).all()
+    elif salary:
+        filtered_table = session.query(Vacancy).filter((Vacancy.salary == salary)).all()
+    elif schedule:
+        filtered_table = session.query(Vacancy).filter((Vacancy.schedule == schedule)).all()
     else:
         return session.query(Vacancy).all()
     return filtered_table
