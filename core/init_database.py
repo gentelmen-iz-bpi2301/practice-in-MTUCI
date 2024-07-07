@@ -1,8 +1,6 @@
 from .database import engine
-from sqlalchemy.orm import DeclarativeBase
+from models import Base
 
-class Base(DeclarativeBase):
-    pass
 
 def init_db():
     try:

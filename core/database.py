@@ -1,16 +1,20 @@
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-from sqlalchemy import create_engine
-
-
-from config import DB_HOST, DB_NAME, DB_PASS, DB_PORT,DB_USER
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, inspect
 from models import Base
 
 
 
-DB_URL = f"postgresql://postgres:postgres@localhost:5432/postgres"
+DB_URL = f"sqlite:///your_vaccacncies.db"
 
 metadata = Base.metadata
 
-engine = create_engine(DB_URL)
+engine = create_engine(DB_URL, echo=True)
 Session = sessionmaker(engine, expire_on_commit=False)
 session = Session()
+
+inspector = inspect(engine)
+tables = inspector.get_table_names()
+if not tables:
+    print('Нет таблиц')
+else:
+    print(f'Вот таблицы:{tables}')

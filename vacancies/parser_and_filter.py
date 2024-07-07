@@ -1,6 +1,7 @@
 import requests
 from core import session
-from models import VacancyTable, Vacancy
+from models import Vacancy
+from sqlalchemy import and_
 
 
 def your_vacancies():
@@ -33,16 +34,26 @@ def your_vacancies():
                 your_salary = 'Не указана'
         else:
             your_salary = 'Не указана'
-        
-        for vacancy in vacancies:
-            parsed_vacancy = VacancyTable(
-                post = post,
-                salary = your_salary,
-                company = company,
-                schedule = schedule,
-                vacancy_url = vacancy_url
-            )
-            session.add(parsed_vacancy)
-            session.commit()
-            return parsed_vacancy
+        parsed_vacancy = Vacancy(
+            post = post,
+            salary = your_salary,
+            company = company,
+            schedule = schedule,
+            vacancy_url = vacancy_url
+        )
+        session.add(parsed_vacancy)
+        session.commit()
+
+def vacancy_filter(post = None, salary = None, schedule = None):
+    if post and salary:
+        filtered_table = session.query(Vacancy).filter(and_(Vacancy.post == post, Vacancy.salary == salary)).all()
+    elif salary and schedule:
+        filtered_table = session.query(Vacancy).filter(and_(Vacancy.salary == salary,Vacancy.schedule == schedule)).all()
+    elif schedule and post:
+        filtered_table = session.query(Vacancy).filter(and_(Vacancy.schedule == schedule, Vacancy.post == post)).all()
+    elif post and schedule and salary:
+        filtered_table = session.query(Vacancy).filter(and_(Vacancy.schedule == schedule, Vacancy.post == post, Vacancy.salary == salary)).all()
+    else:
+        return session.query(Vacancy).all()
+    return filtered_table
 
